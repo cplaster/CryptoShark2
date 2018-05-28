@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoShark2", "CryptoShark2\CryptoShark2.csproj", "{1ED6705A-6C40-447B-A08B-FD5E8514B0C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1ED6705A-6C40-447B-A08B-FD5E8514B0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED6705A-6C40-447B-A08B-FD5E8514B0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED6705A-6C40-447B-A08B-FD5E8514B0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED6705A-6C40-447B-A08B-FD5E8514B0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F3C7998-F8D3-4872-8CD8-D3B00E36DFA3}
+	EndGlobalSection
+EndGlobal
