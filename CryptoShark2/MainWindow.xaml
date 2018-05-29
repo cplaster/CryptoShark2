@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CryptoShark2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="CryptoShark2" Height="450" Width="800">
+    <Grid x:Name="gridMenuBar">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem x:Name="menuFile" Header="_File">
+                    <MenuItem x:Name="menuFileOpen" Header="_Open" Click="menuFileOpen_Click" />
+                    <MenuItem x:Name="menuFileSave" Header="_Save" Click="menuFileSave_Click" />
+                    <Separator />
+                    <MenuItem x:Name="menuFileExit" Header="_Exit" Click="menuFileExit_Click" />
+                </MenuItem>
+                <MenuItem x:Name="menuExchanges" Header="_Exchanges" SubmenuClosed="menuExchanges_SubmenuClosed">
+                    <MenuItem x:Name="menuExchangesAll" Header="All" IsCheckable="True" IsChecked="False" />
+                    <Separator />
+                    <MenuItem x:Name="menuExchangesBittrex" Header="Bittrex" IsCheckable="True" IsChecked="False" />
+                    <MenuItem x:Name="menuExchangesCryptopia" Header="Cryptopia" IsCheckable="True" IsChecked="True" />
+                    <MenuItem x:Name="menuExchangesHitBTC" Header="HitBTC" IsCheckable="True" IsChecked="False" />
+                    <MenuItem x:Name="menuExchangesKuCoin" Header="KuCoin" IsCheckable="True" IsChecked="False" />
+                    <MenuItem x:Name="menuExchangesQryptos" Header="Qryptos" IsCheckable="True" IsChecked="False" />
+                </MenuItem>
+                <MenuItem x:Name="menuOptions" Header="_Options" SubmenuClosed="menuOptions_SubmenuClosed">
+                    <MenuItem x:Name="menuOptionsIgnoreInactive" Header="_Ignore Inactive" IsCheckable="True" IsChecked="False" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <Label Content="Trade Pair:" Grid.Row="1" HorizontalAlignment="Left" Margin="20,5,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.29,0.206"/>
+        <TextBox x:Name="txtTradePair" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="89,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" KeyDown="txtTradePair_KeyDown" LostFocus="txtTradePair_LostFocus"/>
+        <Label x:Name="lblBasePair" Content="BTC Amount:" Grid.Row="1" HorizontalAlignment="Left" Margin="6,33,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtBaseAmount" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="89,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Text="0.00000000"/>
+        <Label x:Name="lblCurrencyPair" Content="XXX Amount:" Grid.Row="1" HorizontalAlignment="Left" Margin="4,59,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtCurrencyAmount" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="89,64,0,0" TextWrapping="Wrap" Text="0.00000000" VerticalAlignment="Top" Width="155"/>
+        <Label Content="Spread %:" HorizontalAlignment="Left" Margin="264,7,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.158,0.615"/>
+        <TextBox x:Name="txtSpread" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="327,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155"/>
+        <Button x:Name="btnSimBuy" Content="Sim Buy" HorizontalAlignment="Left" Margin="327,67,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.92,0.35" Click="btnSimBuy_Click"/>
+        <TextBox x:Name="txtResults" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="264" Margin="10,117,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="772"/>
+        <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="407,67,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="btnClear_Click"/>
+        <Label Content="Fee %:" HorizontalAlignment="Left" Margin="283,36,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.158,0.615"/>
+        <TextBox x:Name="txtTradeFee" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="327,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155"/>
+        <Button x:Name="btnSimSell" Content="Sim Sell" HorizontalAlignment="Left" Margin="327,92,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="btnSimSell_Click"/>
+        <Button x:Name="btnGetInfo" Content="Get Info" HorizontalAlignment="Left" Margin="407,92,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="btnGetInfo_Click"/>
     </Grid>
 </Window>
