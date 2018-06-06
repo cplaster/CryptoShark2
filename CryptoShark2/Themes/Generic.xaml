@@ -1,0 +1,19 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:CryptoShark2">
+
+
+    <Style TargetType="{x:Type local:CandleChart}"
+           >
+        <Setter Property="BackgroundColor" Value="#FFBFC1C5" />
+        <Setter Property="BorderColor" Value="Gray" />
+        <Setter Property="ForegroundColor" Value="Gray" />
+        <Setter Property="GainCandleColor" Value="Green" />
+        <Setter Property="LossCandleColor" Value="Red" />
+        <Setter Property="GainWickColor" Value="Green" />
+        <Setter Property="LossWickColor" Value="Red" />
+        <Setter Property="NullCandleColor" Value="#FFC9A21F" />
+        <Setter Property="NullWickColor" Value="#FFC9A21F" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,17 @@
+﻿----------------------------------------------------------------------------------------------------------------------------------------
+cplaster - 2018/06/05 - 21:46:00
+
+CyrptoShark2 is a refactoring of the original CryptoShark code.
+
+*A lot of simplication has been made to the IExchange and I*Message interfaces and their respective implementations.
+Likewise for the exchange-specific implementations.
+
+*Standardized BookInfo, CoinInfo, MarketInfo, and SummaryInfo classes which all of the exchange implementations use.
+
+*Better support for CryptoCompare queries.
+
+*A more sane MainWindow testbed
+
+*The CandleChart custom control, which can render market history candles.
+
+The next step is to create a decent UI which uses all of this stuff :-)

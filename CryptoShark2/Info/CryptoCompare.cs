@@ -15,6 +15,92 @@ namespace CryptoShark2.Info.CryptoCompare
 
     #region JSON Translators
 
+    public partial class HistoMinute : IListResponse<HistoMinute, HistoMinuteData>
+    {
+        [JsonProperty("Success")]
+        public bool Success { get; set; }
+
+        [JsonProperty("Message:")]
+        public string Message { get; set; }
+
+        [JsonProperty("Type")]
+        public long Type { get; set; }
+
+        [JsonProperty("Aggregated")]
+        public bool Aggregated { get; set; }
+
+        [JsonProperty("Data")]
+        public List<HistoMinuteData> Data { get; set; }
+
+        [JsonProperty("TimeTo")]
+        public long TimeTo { get; set; }
+
+        [JsonProperty("TimeFrom")]
+        public long TimeFrom { get; set; }
+
+        [JsonProperty("FirstValueInArray")]
+        public bool FirstValueInArray { get; set; }
+
+        [JsonProperty("ConversionType")]
+        public ConversionType ConversionType { get; set; }
+    }
+
+    public partial class ConversionType
+    {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("conversionSymbol")]
+        public string ConversionSymbol { get; set; }
+    }
+
+    public partial class HistoMinuteData
+    {
+        [JsonProperty("time")]
+        public long Time { get; set; }
+
+        [JsonProperty("close")]
+        public double Close { get; set; }
+
+        [JsonProperty("high")]
+        public double High { get; set; }
+
+        [JsonProperty("low")]
+        public double Low { get; set; }
+
+        [JsonProperty("open")]
+        public double Open { get; set; }
+
+        [JsonProperty("volumefrom")]
+        public double VolumeFrom { get; set; }
+
+        [JsonProperty("volumeto")]
+        public double VolumeTo { get; set; }
+    }
+
+    public partial class HistoMinute
+    {
+        public HistoMinute FromJson(string json) => JsonConvert.DeserializeObject<HistoMinute>(json, HistoMinuteConverter.Settings);
+        public string ToJson() => JsonConvert.SerializeObject(this, HistoMinuteConverter.Settings);
+    }
+
+    public static class HistoMinuteSerialize
+    {
+        public static string ToJson(this HistoMinute self) => JsonConvert.SerializeObject(self, HistoMinuteConverter.Settings);
+    }
+
+    internal static class HistoMinuteConverter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters = {
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
+    }
+
     public partial class CoinList : IDictionaryResponse<CoinList, CoinListData>
     {
         [JsonProperty("Success")]
@@ -624,6 +710,24 @@ namespace CryptoShark2.Info.CryptoCompare
     {
         public static string CoinListUrl = "https://min-api.cryptocompare.com/data/all/coinlist";
         public static string CoinFullInfoUrl = "https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=[0]";
+        public static string GetHistoMinuteUrl = "https://min-api.cryptocompare.com/data/histominute?fsym=[0]&tsym=[1]&limit=[2]&e=[3]";
+        public static string GetHistoHourUrl = "https://min-api.cryptocompare.com/data/histohour?fsym=[0]&tsym=[1]&limit=[2]&e=[3]";
+        public static string GetHistoDayUrl = "https://min-api.cryptocompare.com/data/histoday?fsym=[0]&tsym=[1]&limit=[2]&e=[3]";
+    }
+
+    public static class Dates
+    {
+        public static DateTime FromUnixTime(this long unixTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime);
+        }
+
+        public static long ToUnixTime(this DateTime date)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return Convert.ToInt64((date - epoch).TotalSeconds);
+        }
     }
 
     public class Api
@@ -671,6 +775,39 @@ namespace CryptoShark2.Info.CryptoCompare
             _CoinFullInfo.Initialize();
             return _CoinFullInfo.Data;
         }
+
+        public List<HistoMinuteData> GetHistoData(string marketCurrency, string baseCurrency, string exchange, HistoType type, string limit = "60")
+        {
+            string[] args = { marketCurrency, baseCurrency, limit, exchange };
+            string url = "";
+
+            switch (type)
+            {
+                case HistoType.Minute:
+                    url = Constants.GetHistoMinuteUrl;
+                    break;
+
+                case HistoType.Hour:
+                    url = Constants.GetHistoHourUrl;
+                    break;
+
+                case HistoType.Day:
+                    url = Constants.GetHistoDayUrl;
+                    break;
+            }
+
+            HistoMinuteMessage m = new HistoMinuteMessage(url, args);
+            m.Initialize();
+            return m.Data;
+        }
+
+    }
+
+    public enum HistoType
+    {
+        Minute,
+        Hour,
+        Day
     }
 
     public class CoinListMessage : RequestDictionaryMessage<CoinList, CoinListData, Dictionary<string, CoinListData>>
@@ -688,7 +825,6 @@ namespace CryptoShark2.Info.CryptoCompare
         }
     }
 
-
     public class CoinFullInfoMessage : RequestMessage<CoinFullInfo, CoinFullInfoData, CoinFullInfoData>
     {
         public CoinFullInfoMessage(string url, string[] args) : base(url, args)
@@ -699,6 +835,21 @@ namespace CryptoShark2.Info.CryptoCompare
         }
 
         public override void Process(IResponse<CoinFullInfo, CoinFullInfoData> mr)
+        {
+            this._Data = mr.Data;
+        }
+    }
+
+    public class HistoMinuteMessage : RequestListMessage<HistoMinute, HistoMinuteData, List<HistoMinuteData>>
+    {
+        public HistoMinuteMessage(string url, string[] args) : base(url, args)
+        {
+            _replaceHeaders = true;
+            _replaceFrom = "\"Response\":\"Success\"";
+            _replaceTo = "\"Success\":true, \"Message\":\"\"";
+        }
+
+        public override void Process(IListResponse<HistoMinute, HistoMinuteData> mr)
         {
             this._Data = mr.Data;
         }
